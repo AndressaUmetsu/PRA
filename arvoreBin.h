@@ -16,15 +16,23 @@ No *Criar (TipoDado valor, No *esq, No *dir);
 
 No *Inserir (TipoDado valor, No *raiz);
 
+TipoDado NoMaior (No *x);
+
+void Remover (TipoDado x, No *raiz);
+
 int Vazia (No *raiz);
 
 No *BuscaBinaria (TipoDado x, No *raiz);
+
+TipoDado MostrarInfo (TipoDado x, No *raiz);
 
 void PreOrdem (No *raiz);
 
 void EmOrdem (No *raiz);
 
 void PosOrdem(No *raiz);
+
+TipoDado Maior (TipoDado a, TipoDado b);
 
 int Altura (No *raiz);
 

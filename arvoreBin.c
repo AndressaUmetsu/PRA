@@ -8,11 +8,14 @@ No *Inicializar(){
 
 No *Criar (TipoDado valor, No *esq, No *dir) {
 	No *no;
+	
 	no = (No *) malloc (sizeof(No));
+	
 	if (no == NULL){
 		printf("Erro ao Criar\n");
 		exit(1);
 	} 
+	
 	no->esq = esq;
 	no->dir = dir;
 	no->info = valor;
@@ -24,27 +27,66 @@ No *Inserir (TipoDado valor, No *raiz){
 		raiz = Criar (valor, NULL, NULL);
 		return raiz;
 	}
-	if (valor < raiz->info) 
-	   	raiz->esq = Inserir (valor, raiz->esq);
-	else if (valor > raiz->info)  
-		raiz->dir = Inserir (valor, raiz->dir);
-	return raiz;
-}
-
-No *Remover (TipoDado x, No *raiz){
 	
-	if(Vazia(raiz)){
-		printf("Nao existe o valor \n");
-		return NULL;
+	if (valor < raiz->info){ 
+	   	raiz->esq = Inserir (valor, raiz->esq);
+	   	return raiz;
 	}
-	//remocao de folha
-    //remocao de pai de filho unico
-    //remocao de pai de dois filhos
 
-
+	if (valor > raiz->info){
+		raiz->dir = Inserir (valor, raiz->dir);
+		return raiz;
+	}  
 }
 
+TipoDado NoMaior (No *x){
+	TipoDado maior;
+	No *aux;
 
+	if (!Vazia(x->dir))
+		return NoMaior (x->dir); // Continua procurando pelo maior elemento 
+	
+	aux = x;
+	maior = x->info;
+	x = x->esq; // Filho a esquerda passa a ser o pai
+	free (aux); 
+	return maior; 
+}
+
+void Remover (TipoDado x, No *raiz){
+	No *aux;
+	
+	if(!Vazia (raiz)){		
+		if(raiz->info == x){
+			aux = raiz;
+			
+			if (Vazia (raiz->esq) && Vazia (raiz->dir)){ // Folha
+				raiz = NULL;
+				free (raiz);			
+			}
+			else if (Vazia (raiz->esq)){ // Filho unico a direita
+				raiz = raiz->dir;
+				free (aux);
+			}
+			
+			else if (Vazia(raiz->dir)){ //Filho unico a esquerda
+				raiz = raiz->esq;
+				free (aux);
+			}
+			
+			else // Filho a direita e a esquerda, coloca o maior elemento na subarvore a esquerda
+				raiz->info = NoMaior (raiz->esq);
+		}
+		
+		else if (raiz->info < x) // x está na subarvore a direita
+			Remover (x, raiz->dir);
+		
+		else if (raiz->info > x) // x está na subarvore a esquerda
+			Remover (x, raiz->esq);
+	}
+
+	else printf("Elemento não encontrado\n");
+} 		
 
 int Vazia (No *raiz){
 	return raiz == NULL;
@@ -53,11 +95,21 @@ int Vazia (No *raiz){
 No* BuscaBinaria (TipoDado x, No *raiz){
 	if (Vazia(raiz)) 
 		return NULL;
-	if (raiz->info > x) 
+	
+	if (raiz->info > x) // x está na subarvore a esquerda
 	    return BuscaBinaria (x, raiz->esq);
-	if (raiz->info < x)  
+	
+	if (raiz->info < x) // x está na subarvore a direita
 		return BuscaBinaria (x, raiz->dir);
+	
 	return raiz;
+}
+
+TipoDado MostrarInfo (TipoDado x, No *raiz){
+	if(Vazia (raiz))
+		return -1;
+    
+    return raiz->info == x || MostrarInfo (x, raiz->esq) || MostrarInfo (x, raiz->dir); 
 }
 
 void PreOrdem (No *raiz){
@@ -91,20 +143,24 @@ TipoDado Maior (TipoDado a, TipoDado b){
 int Altura (No *raiz){
    	if((Vazia (raiz)) || ( Vazia (raiz->esq) && Vazia (raiz->dir)))
        return 0;
+   	
    	return 1 + Maior(Altura(raiz->esq), Altura(raiz->dir));
 }
 
 int QuantidadeNos (No *raiz){
 	if(Vazia(raiz))
 		return 0;
+	
 	return 1 + QuantidadeNos (raiz->esq) + QuantidadeNos (raiz->dir);
 }
 
 int QuantidadeFolhas (No *raiz){
 	if(Vazia (raiz))
 		return 0;
+	
 	if(Vazia (raiz->esq) && Vazia (raiz->dir))
 		return 1;
+	
 	return QuantidadeFolhas (raiz->esq) + QuantidadeFolhas (raiz->dir); 
 }
 
