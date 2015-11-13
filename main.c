@@ -9,13 +9,13 @@ int main(int argc, char const *argv[])
     Inserir (50, &arvore);
     Inserir (40, &arvore);
     Inserir (60, &arvore);
-    Inserir (35, &arvore);
+    Inserir (30, &arvore);
     Inserir (45, &arvore);
-    Inserir (70, &arvore);
+    Inserir (35, &arvore);
     //arvore = Inserir (5, arvore);
     PreOrdem (arvore);
     printf("\n");
-    Remover (60, &arvore);
+    Remover (40, &arvore);
     /*b = BuscaBinaria (11, arvore);
     if (b != NULL)
 		printf ("\n\nValor 11 encontrado\n");

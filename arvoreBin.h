@@ -16,7 +16,7 @@ No *Criar (TipoDado valor, No *esq, No *dir);
 
 void Inserir (TipoDado valor, No **raiz);
 
-TipoDado NoMaior (No *x);
+TipoDado NoMaior (No **x);
 
 void Remover (TipoDado x, No **raiz);
 

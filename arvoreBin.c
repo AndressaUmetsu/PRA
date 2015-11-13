@@ -34,16 +34,16 @@ void Inserir (TipoDado valor, No **raiz){
 
 }
 
-TipoDado NoMaior (No *x){
+TipoDado NoMaior (No **x){
 	TipoDado maior;
 	No *aux;
 
-	if (!Vazia(x->dir))
-		return NoMaior (x->dir); // Continua procurando pelo maior elemento 
-	
-	aux = x;
-	maior = x->info;
-	x = x->esq; // Filho a esquerda passa a ser o pai
+	if (!Vazia((*x)->dir))
+		return NoMaior (&(*x)->dir); // Continua procurando pelo maior elemento 
+	    
+	aux = *x;
+	maior = (*x)->info;
+	*x = (*x)->esq; // Filho a esquerda passa a ser o pai
 	free (aux); 
 	return maior; 
 }
@@ -52,25 +52,25 @@ void Remover (TipoDado x, No **raiz){
 	No *aux;
 	
 	if(!Vazia (*raiz)){		
+		aux = *raiz;
+		
 		if((*raiz)->info == x){  //encontrou x
-			aux = *raiz;
 			if (Vazia ((*raiz)->esq) && Vazia ((*raiz)->dir)){ // Folha
 				*raiz = NULL;
-				free (*raiz);			
+		    	free (aux);			
 			}
 			else if (Vazia ((*raiz)->esq)){ // Filho unico a direita
 				*raiz = (*raiz)->dir;	
-				(*raiz)->dir = NULL;			
-				free ((*raiz)->dir);
+				free (aux);
 			} 
-			/*
+			
 			else if (Vazia((*raiz)->dir)){ //Filho unico a esquerda
-				raiz = raiz->esq;
+				*raiz = (*raiz)->esq;
 				free (aux);
 			}
 			
 			else // Filho a direita e a esquerda, coloca o maior elemento na subarvore a esquerda
-				raiz->info = NoMaior (raiz->esq);*/
+				(*raiz)->info = NoMaior (&(*raiz)->esq);
 		}
 
 		else if ((*raiz)->info < x) // x está na subarvore a direita
