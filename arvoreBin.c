@@ -22,68 +22,63 @@ No *Criar (TipoDado valor, No *esq, No *dir) {
 	return no;
 }
 
-No *Inserir (TipoDado valor, No *raiz){
-	if (Vazia(raiz)){
-		raiz = Criar (valor, NULL, NULL);
-		return raiz;
-	}
+void Inserir (TipoDado valor, No **raiz){
+	if (Vazia(*raiz))
+		*raiz = Criar (valor, NULL, NULL);
 	
-	if (valor < raiz->info){ 
-	   	raiz->esq = Inserir (valor, raiz->esq);
-	   	return raiz;
-	}
+	else if (valor < (*raiz)->info) 
+	   	Inserir (valor, &(*raiz)->esq);
 
-	if (valor > raiz->info){
-		raiz->dir = Inserir (valor, raiz->dir);
-		return raiz;
-	}  
+	else if (valor > (*raiz)->info)
+		Inserir (valor, &(*raiz)->dir);
+
 }
 
-TipoDado NoMaior (No *x){
+TipoDado NoMaior (No **x){
 	TipoDado maior;
 	No *aux;
 
-	if (!Vazia(x->dir))
-		return NoMaior (x->dir); // Continua procurando pelo maior elemento 
-	
-	aux = x;
-	maior = x->info;
-	x = x->esq; // Filho a esquerda passa a ser o pai
+	if (!Vazia((*x)->dir))
+		return NoMaior (&(*x)->dir); // Continua procurando pelo maior elemento 
+	    
+	aux = *x;
+	maior = (*x)->info;
+	*x = (*x)->esq; // Filho a esquerda passa a ser o pai
 	free (aux); 
 	return maior; 
 }
 
-void Remover (TipoDado x, No *raiz){
+void Remover (TipoDado x, No **raiz){
 	No *aux;
 	
-	if(!Vazia (raiz)){		
-		if(raiz->info == x){
-			aux = raiz;
-			
-			if (Vazia (raiz->esq) && Vazia (raiz->dir)){ // Folha
-				raiz = NULL;
-				free (raiz);			
+	if(!Vazia (*raiz)){		
+		aux = *raiz;
+		
+		if((*raiz)->info == x){  //encontrou x
+			if (Vazia ((*raiz)->esq) && Vazia ((*raiz)->dir)){ // Folha
+				*raiz = NULL;
+		    	free (aux);			
 			}
-			else if (Vazia (raiz->esq)){ // Filho unico a direita
-				raiz = raiz->dir;
+			else if (Vazia ((*raiz)->esq)){ // Filho unico a direita
+				*raiz = (*raiz)->dir;	
 				free (aux);
-			}
+			} 
 			
-			else if (Vazia(raiz->dir)){ //Filho unico a esquerda
-				raiz = raiz->esq;
+			else if (Vazia((*raiz)->dir)){ //Filho unico a esquerda
+				*raiz = (*raiz)->esq;
 				free (aux);
 			}
 			
 			else // Filho a direita e a esquerda, coloca o maior elemento na subarvore a esquerda
-				raiz->info = NoMaior (raiz->esq);
+				(*raiz)->info = NoMaior (&(*raiz)->esq);
 		}
+
+		else if ((*raiz)->info < x) // x está na subarvore a direita
+			Remover (x, &(*raiz)->dir);
 		
-		else if (raiz->info < x) // x está na subarvore a direita
-			Remover (x, raiz->dir);
-		
-		else if (raiz->info > x) // x está na subarvore a esquerda
-			Remover (x, raiz->esq);
-	}
+		else if ((*raiz)->info > x) // x está na subarvore a esquerda
+			Remover (x, &(*raiz)->esq);
+	} 
 
 	else printf("Elemento não encontrado\n");
 } 		

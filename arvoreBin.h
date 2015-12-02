@@ -14,11 +14,11 @@ No *Inicializar();
 
 No *Criar (TipoDado valor, No *esq, No *dir);
 
-No *Inserir (TipoDado valor, No *raiz);
+void Inserir (TipoDado valor, No **raiz);
 
-TipoDado NoMaior (No *x);
+TipoDado NoMaior (No **x);
 
-void Remover (TipoDado x, No *raiz);
+void Remover (TipoDado x, No **raiz);
 
 int Vazia (No *raiz);
 
