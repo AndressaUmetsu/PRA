@@ -4,6 +4,9 @@
 #include "Lista.h"
 #include "ABP.h"
 
+/*http://www2.unitins.br/BibliotecaMidia/Files/Documento/AVA_633682985082488750aula_6.pdf*/
+
+
 void Comprimir(){
 
 }
@@ -13,8 +16,37 @@ void Descomprimir(){
 }
 
 void Huffman(){
+	Elemento *aux = Frequencia->cabeca;
+	
+	while(aux != NULL){
+		CriarFolhas(&aux);
+	
+		aux = aux->proximo;
+	}
+
+
+
 
 }  
+
+void CriarFolhas(Elemento *no){
+	ABP aux;
+	inicializa_ABP(&aux, sizeof(no));
+	insere_ABP(&aux, no, );
+
+}
+
+
+int CompararInfo(void *a, void *b){
+	Info *aux1 = (Info*) a;
+    Info *aux2 = (Info*) b;
+   	
+   	
+   	return ;
+
+
+
+}
 
 void LerArquivo (char *arquivo){
 	FILE *fp;

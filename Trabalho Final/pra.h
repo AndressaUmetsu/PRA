@@ -15,10 +15,11 @@ int TotalSimbolos;
 
 Lista Frequencia;
 
+Lista SubArvore;
+
 void Comprimir();
 
 void Descomprimir();
-
 
 void Huffman();  
 
