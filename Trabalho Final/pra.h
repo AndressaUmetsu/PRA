@@ -1,20 +1,33 @@
 #ifndef PRA_H_INCLUDE
 #define PRA_H_INCLUDE
 
+#include "Lista.h"
+#include "ABP.h"
+
+#define SUCESSO 1
+
 typedef struct {
-	int nSimbolos; 
-	Lista *frequencia; 
-}InfoTexto;
+	int nSimbolo; 
+	char simbolo;
+}Info;
 
+int TotalSimbolos;
 
+Lista Frequencia;
 
 void Comprimir();
 
 void Descomprimir();
 
 
-void Huffman(int n, char vetor);  
+void Huffman();  
 
-InfoTexto LerArquivo (char arquivo[32]);
+void LerArquivo (char arquivo[32]);
+
+void InserirSimbolo(char c);
+
+int CompararSimbolo(void *a, void *b);
+
+void Imprimir(void* info);
 
 #endif

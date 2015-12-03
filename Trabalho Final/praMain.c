@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pra.h"
+#include "Lista.h"
+#include "ABP.h"
 
 int main(int argc, char *argv[])
 {

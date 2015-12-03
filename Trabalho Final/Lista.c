@@ -247,18 +247,19 @@ int elementoExiste(Lista *l, void *info, int (*compara_info)(void *, void *))
 {
     Elemento *aux = l->cabeca;
     if (aux == NULL)
-        return 0;
-
+        return -1;
+    int cont = 0;
     while(aux != NULL)
     {
         if (compara_info(aux->info, info) == 0)
         {
-            return 1;
+            return cont;
         }
         aux = aux->proximo;
+        cont++;
     }
 
-    return 0;
+    return -1;
 
 }
 
