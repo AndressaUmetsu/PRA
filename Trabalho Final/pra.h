@@ -17,13 +17,26 @@ Lista Frequencia;
 
 Lista SubArvore;
 
+
 void Comprimir();
 
 void Descomprimir();
 
-void Huffman();  
+void Huffman();
 
-void LerArquivo (char arquivo[32]);
+int ProcuraMaior();
+
+ABP CriarSubArvore();
+
+ABP CriarFolhas(Info *aux);
+
+int ComparaInfo(void *a, void *b);
+
+void MostraInfo(void *info);
+
+void MostraLista(void *info);
+
+void LerArquivo (char *arquivo);
 
 void InserirSimbolo(char c);
 

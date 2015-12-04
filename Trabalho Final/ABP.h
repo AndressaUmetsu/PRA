@@ -1,3 +1,6 @@
+#ifndef ABP_H_INCLUDE
+#define ABP_H_INCLUDE
+
 
 typedef struct no{
    void *info;
@@ -22,3 +25,4 @@ void mostra_estrutura(ABP a, void (*mostra_info)(void *) );
 
 int altura(NoABP *n);
 
+#endif

@@ -1,6 +1,6 @@
 all:
-	gcc -o arvore arvoreBin.c main.c
-	./arvore
+	gcc -o pra praMain.c pra.c pra.h Lista.h Lista.c
+	./pra texto.txt
 
 rm:
-	rm arvore
+	rm pra
