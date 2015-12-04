@@ -18,7 +18,7 @@ void Descomprimir(){
 void Huffman(){
 	Info aux;
 	ABP sub;	
-	int t = TotalSimbolos;
+	int t = TotalSimbolos-1;
 
 	inicializa_lista(&SubArvore, sizeof(ABP));
 
@@ -27,13 +27,15 @@ void Huffman(){
 		sub = CriarFolhas(&aux);
 		insereNoInicio(&SubArvore, &sub);	
 	}
-	mostra_lista(SubArvore, MostraLista);
+	
 
 	while(t > 1){
 		sub = CriarSubArvore();
-
+		insereNoInicio(&SubArvore, &sub);
+		//mostra_lista(SubArvore, MostraLista);
 		t--;
 	}
+	//mostra_lista(SubArvore, MostraLista);
 }  
 
 int ProcuraMaior(){
@@ -61,28 +63,39 @@ ABP CriarSubArvore(){
 	ABP a1, a2;
 	ABP an;
 	Info *aux1, *aux2, *auxn;
-	NoABP *no1, *no2; 
+	NoABP *no, *no2, *noR; 
+
+	auxn = malloc(sizeof(Info));
 
 	removeDoInicio(&SubArvore, &a1);
-	no1 = a1.raiz;
-	aux1 = (Info *) (no1->info);
+	
+	mostra_estrutura(a1, MostraInfo);
+	
+	no = a1.raiz;
+	aux1 = (Info*) (no->info);
 
 	removeDoInicio(&SubArvore, &a2);
+
+	mostra_estrutura(a2, MostraInfo);
+
 	no2 = a2.raiz;
 	aux2 = (Info *) (no2->info);
-
+	
 	inicializa_ABP(&an, sizeof(Info)); 
 
-	auxn->nSimbolo = aux1->nSimbolo + aux2->nSimbolo;
-	insere_ABP(&an, auxn , ComparaInfo);
-	insere_ABP(&an, aux1, ComparaInfo);
-	insere_ABP(&an, aux2, ComparaInfo);
+	auxn->nSimbolo = (aux1->nSimbolo) + (aux2->nSimbolo);
+	MostraInfo(&auxn);
+	insere_ABP(&an, &auxn , ComparaInfo);
+	//mostra_estrutura(an, MostraInfo);
+	insere_ABP(&an, no->info, ComparaInfo);
+	//mostra_estrutura(an, MostraInfo);
+	insere_ABP(&an, no2->info, ComparaInfo);
+	mostra_estrutura(an, MostraInfo);
+	limpa_ABP(&a1);
+	limpa_ABP(&a2);
 	return an;
 }
  
-
-
-
 ABP CriarFolhas(Info *aux){
 	ABP subArvore;
 
@@ -106,7 +119,7 @@ int ComparaInfo(void *a, void *b){
 
 void MostraInfo(void *info){
 	Info *p = (Info *) info;
-	printf("%d %c\n", p->nSimbolo, p->simbolo);
+	printf("nSimbolo %d simbolo %c\n", p->nSimbolo, p->simbolo);
 }
 
 void MostraLista(void *info){
@@ -130,7 +143,7 @@ void LerArquivo (char *arquivo){
 		InserirSimbolo(c);
 	
 	mostra_lista(Frequencia, Imprimir);
-	printf("%d\n", TotalSimbolos);
+	printf("Tota simbolo %d\n", TotalSimbolos);
 	fclose(fp);
 }
 
