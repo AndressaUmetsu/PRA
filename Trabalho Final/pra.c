@@ -18,8 +18,7 @@ void Descomprimir(){
 void Huffman(){
 	Info aux;
 	ABP sub;	
-	int t = TotalSimbolos-1;
-
+	int t = TotalSimbolos;
 	inicializa_lista(&SubArvore, sizeof(ABP));
 
 	while(!listaVazia(&Frequencia)){
@@ -29,13 +28,15 @@ void Huffman(){
 	}
 	
 
+	//sub = CriarSubArvore();
+
+
+	
 	while(t > 1){
 		sub = CriarSubArvore();
 		insereNoInicio(&SubArvore, &sub);
-		//mostra_lista(SubArvore, MostraLista);
 		t--;
 	}
-	//mostra_lista(SubArvore, MostraLista);
 }  
 
 int ProcuraMaior(){
@@ -60,40 +61,61 @@ int ProcuraMaior(){
 }
 
 ABP CriarSubArvore(){
-	ABP a1, a2;
-	ABP an;
-	Info *aux1, *aux2, *auxn;
-	NoABP *no, *no2, *noR; 
 
-	auxn = malloc(sizeof(Info));
-
-	removeDoInicio(&SubArvore, &a1);
 	
-	mostra_estrutura(a1, MostraInfo);
+
+
+
+
+
+
+
+	ABP aEsq, aDir, aRaiz, subArvore;
+	Info *iEsq, *iDir, *iRaiz;
+	NoABP *noEsq, *noDir, *noRaiz; 
+
+	// SubArvore Esquerda
+	removeDoInicio(&SubArvore, &aEsq);	
+	noEsq = aEsq.raiz;
+	iEsq = (Info*) (noEsq->info);
+
+	//SubArvore Direita
+	removeDoInicio(&SubArvore, &aDir);
+	noDir = aDir.raiz;
+	iDir = (Info *) (noDir->info);
 	
-	no = a1.raiz;
-	aux1 = (Info*) (no->info);
-
-	removeDoInicio(&SubArvore, &a2);
-
-	mostra_estrutura(a2, MostraInfo);
-
-	no2 = a2.raiz;
-	aux2 = (Info *) (no2->info);
+	//Cria raiz A
+	inicializa_ABP(&aRaiz, sizeof(Info)); 
 	
-	inicializa_ABP(&an, sizeof(Info)); 
+	iRaiz = malloc(sizeof(Info));	
+	iRaiz->nSimbolo = (iEsq->nSimbolo) + (iDir->nSimbolo);
+		
+	// insere info na raiz A
+	insere_ABP(&aRaiz, iRaiz , ComparaInfo);
 
-	auxn->nSimbolo = (aux1->nSimbolo) + (aux2->nSimbolo);
-	MostraInfo(&auxn);
-	insere_ABP(&an, &auxn , ComparaInfo);
-	//mostra_estrutura(an, MostraInfo);
-	insere_ABP(&an, no->info, ComparaInfo);
-	//mostra_estrutura(an, MostraInfo);
-	insere_ABP(&an, no2->info, ComparaInfo);
-	mostra_estrutura(an, MostraInfo);
-	limpa_ABP(&a1);
-	limpa_ABP(&a2);
-	return an;
+	//****** Criar subarvore **********
+	//inicializa_ABP(&subArvore, sizeof(ABP));
+	
+	// insere raiz 
+	//insere_ABP(&subArvore, iRaiz, ComparaInfo);
+	noRaiz = aRaiz.raiz;
+
+	// insere subarvore esquerda	
+	noRaiz->esq = aEsq.raiz;
+
+	/*Lado = ESQUERDA;
+	insere_ABP(&subArvore, iEsq, ComparaInfo);*/
+
+	// insere subarvore direita
+	noRaiz->dir = aDir.raiz;
+	/*Lado = DIREITA;
+	insere_ABP(&subArvore, iDir, ComparaInfo);*/
+
+	//mostra_estrutura(subArvore, MostraInfo);
+
+	limpa_ABP(&aEsq);
+	limpa_ABP(&aDir);
+	return aRaiz;
 }
  
 ABP CriarFolhas(Info *aux){
@@ -105,13 +127,10 @@ ABP CriarFolhas(Info *aux){
 } 
 
 int ComparaInfo(void *a, void *b){
-	Info *pa = (Info *) a;
-    Info *pb = (Info *) b;
-    
-    if(pa->nSimbolo > pb->nSimbolo)
+	if(Lado == DIREITA)
        return 1;
 
-    if(pa->nSimbolo < pb->nSimbolo)
+    if(Lado == ESQUERDA)
        return -1;
 
     return 0;
@@ -151,7 +170,6 @@ void InserirSimbolo(char c){
 	Info aux;
 	int pos;
 	aux.simbolo = c;
-
 	if ((pos = elementoExiste(&Frequencia, &aux, CompararSimbolo)) != -1){
 		aux.nSimbolo++;
 		modificaNaPosicao(&Frequencia, &aux, pos);

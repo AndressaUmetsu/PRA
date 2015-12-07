@@ -265,8 +265,8 @@ void insere_ABP(ABP *a, void *info, int (*compara_info)(void *, void *) ){
        a->raiz = inicializa_no_ABP(info, a->tamanhoInfo);
     else{
        insere_no_ABP(a->raiz, info, a->tamanhoInfo, (*compara_info) );
-/*
-       // ******** Verifica balanceamento ********
+
+      /* // ******** Verifica balanceamento ********
        NoABP *p = verifica_balanceamento(a->raiz);
        if(p != NULL){
           executa_balancemanto(p, a);

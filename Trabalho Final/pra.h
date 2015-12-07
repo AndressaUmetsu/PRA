@@ -5,6 +5,8 @@
 #include "ABP.h"
 
 #define SUCESSO 1
+#define ESQUERDA 1
+#define DIREITA	0
 
 typedef struct {
 	int nSimbolo; 
@@ -12,6 +14,8 @@ typedef struct {
 }Info;
 
 int TotalSimbolos;
+
+int Lado;
 
 Lista Frequencia;
 
