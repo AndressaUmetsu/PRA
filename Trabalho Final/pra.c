@@ -26,17 +26,14 @@ void Huffman(){
 		sub = CriarFolhas(&aux);
 		insereNoInicio(&SubArvore, &sub);	
 	}
-	
-
-	//sub = CriarSubArvore();
-
-
-	
+		
 	while(t > 1){
 		sub = CriarSubArvore();
 		insereNoInicio(&SubArvore, &sub);
 		t--;
 	}
+	mostra_lista(SubArvore,MostraLista);
+	
 }  
 
 int ProcuraMaior(){
@@ -61,16 +58,7 @@ int ProcuraMaior(){
 }
 
 ABP CriarSubArvore(){
-
-	
-
-
-
-
-
-
-
-	ABP aEsq, aDir, aRaiz, subArvore;
+	ABP aEsq, aDir, aRaiz;
 	Info *iEsq, *iDir, *iRaiz;
 	NoABP *noEsq, *noDir, *noRaiz; 
 
@@ -84,37 +72,24 @@ ABP CriarSubArvore(){
 	noDir = aDir.raiz;
 	iDir = (Info *) (noDir->info);
 	
-	//Cria raiz A
+	//Cria subarvore
 	inicializa_ABP(&aRaiz, sizeof(Info)); 
 	
 	iRaiz = malloc(sizeof(Info));	
 	iRaiz->nSimbolo = (iEsq->nSimbolo) + (iDir->nSimbolo);
 		
-	// insere info na raiz A
+	// insere info na raiz da subarvore
 	insere_ABP(&aRaiz, iRaiz , ComparaInfo);
 
-	//****** Criar subarvore **********
-	//inicializa_ABP(&subArvore, sizeof(ABP));
-	
-	// insere raiz 
-	//insere_ABP(&subArvore, iRaiz, ComparaInfo);
 	noRaiz = aRaiz.raiz;
 
 	// insere subarvore esquerda	
 	noRaiz->esq = aEsq.raiz;
-
-	/*Lado = ESQUERDA;
-	insere_ABP(&subArvore, iEsq, ComparaInfo);*/
-
 	// insere subarvore direita
 	noRaiz->dir = aDir.raiz;
-	/*Lado = DIREITA;
-	insere_ABP(&subArvore, iDir, ComparaInfo);*/
+	
+	//mostra_estrutura(aRaiz, MostraInfo);
 
-	//mostra_estrutura(subArvore, MostraInfo);
-
-	limpa_ABP(&aEsq);
-	limpa_ABP(&aDir);
 	return aRaiz;
 }
  
@@ -162,7 +137,7 @@ void LerArquivo (char *arquivo){
 		InserirSimbolo(c);
 	
 	mostra_lista(Frequencia, Imprimir);
-	printf("Tota simbolo %d\n", TotalSimbolos);
+	printf("Total simbolos %d\n", TotalSimbolos);
 	fclose(fp);
 }
 
