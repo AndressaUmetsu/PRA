@@ -57,9 +57,42 @@ void Huffman(){
 	mostra_estrutura(Arvore, MostraInfo);
 }  
 
-void GerarCodigo(); 
+void GerarCodigo(NoABP *a, char *codAnterior){
+	int lado;
+	char codigoNovo[32];
 
+	if (a->esq != NULL){
+		lado = ESQUERDA;
+		codigoNovo = Codigo(a, codAnterior, lado);
+		GerarCodigo(a->esq, codigoNovo);
+	}
+	if (a->dir != NULL)
+		lado = DIREITA;
+		codigoNovo = Codigo(a, codAnterior, lado);
+		GerarCodigo(a->dir, codigoNovo);
+	}
+} 
 
+void Codigo(NoABP *no, char *codAnterior, int lado){
+	Info *aux;
+	if (lado == ESQUERDA){
+		aux = (Info *) (no->info);
+		printf("%s\n",aux->codigo);
+		strcat(codAnterior, "1");
+		printf("%s\n",codAnterior);
+		strcpy(aux->codigo, codAnterior);
+		printf("%s\n",aux->codigo);
+	}
+
+	if (lado == DIREITA){
+		aux = (Info *) (no->info);
+		printf("%s\n",aux->codigo);
+		strcat(codAnterior, "0");
+		printf("%s\n",codAnterior);
+		strcpy(aux->codigo, codAnterior);
+		printf("%s\n",aux->codigo);
+	} 
+}
 
 int ProcuraMaior(){
 	Info *aux;
@@ -128,7 +161,7 @@ ABP CriarFolhas(Info *aux){
 
 void MostraInfo(void *info){
 	Info *p = (Info *) info;
-	printf("nSimbolo %d simbolo %c codigo %s \n", p->nSimbolo, p->simbolo, p->cod);
+	printf("nSimbolo %d simbolo %c \n", p->nSimbolo, p->simbolo, p->cod);
 }
 
 void MostraLista(void *info){
@@ -148,6 +181,7 @@ void LerArquivo (char *arquivo){
 	}
 
 	inicializa_lista(&Frequencia, sizeof(Info));
+	inicializa_lista(&F, sizeof(Info));
 
 	while((c = fgetc(fp)) != EOF)
 		InserirSimbolo(c);
@@ -164,10 +198,13 @@ void InserirSimbolo(char c){
 	if ((pos = elementoExiste(&Frequencia, &aux, CompararSimbolo)) != -1){
 		aux.nSimbolo++;
 		modificaNaPosicao(&Frequencia, &aux, pos);
+		modificaNaPosicao(&F, &aux, pos);
 	}else{
 		TotalSimbolos++;
 		aux.nSimbolo = 1;
+		aux.codigo = "";
 		insereNoFim(&Frequencia, &aux);
+		insereNoFim(&F, &aux);
 	} 
 }
 

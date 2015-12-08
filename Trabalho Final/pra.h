@@ -20,6 +20,8 @@ int Lado;
 
 Lista Frequencia;
 
+Lista F;
+
 Lista SubArvore;
 
 ABP Arvore;
@@ -31,6 +33,10 @@ void Comprimir();
 void Descomprimir();
 
 void Huffman();
+
+void GerarCodigo(NoABP *a);
+
+void Codigo(char *codigo)
 
 int ProcuraMaior();
 

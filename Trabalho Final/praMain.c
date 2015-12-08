@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 	
 	LerArquivo(argv[1]);
 	Huffman();
-	Comprimir(argv[1]);
-
+	//Comprimir(argv[1]);
+	GerarCodigo();
 
 
 	return 0;
