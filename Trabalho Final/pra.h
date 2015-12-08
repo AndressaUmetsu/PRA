@@ -11,7 +11,7 @@
 typedef struct {
 	int nSimbolo; 
 	char simbolo;
-	char cod[32];
+	char codigo[32];
 }Info;
 
 int TotalSimbolos;
@@ -34,9 +34,9 @@ void Descomprimir();
 
 void Huffman();
 
-void GerarCodigo(NoABP *a);
+void GerarCodigo(NoABP *a, char codAnterior[32]);
 
-void Codigo(char *codigo)
+char *Codigo(NoABP *no, char codAnterior[32], int lado);
 
 int ProcuraMaior();
 

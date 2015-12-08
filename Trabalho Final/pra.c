@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "pra.h"
 #include "Lista.h"
 #include "ABP.h"
@@ -14,11 +15,22 @@ void Comprimir(char *arquivo){
 		exit(1);
 	}
 
-	/*while((c = fgetc(texto)) != EOF){
-		busca_APB(Arvore, c, ComparaInfo);
+	GerarCodigo(Arvore.raiz, "");
+	mostra_estrutura(Arvore, MostraInfo);
+	mostra_lista(F, MostraInfo);
 
-	}*/
-	
+	/*while((c = fgetc(texto)) != EOF){
+		if (pos = buscaElemento(&F, aux, CompararSimbolo)) != -1){
+
+
+			fprintf(arquivo, "%s\n",aux->codigo);
+
+		}
+
+
+
+	}
+	*/
 }
 
 
@@ -54,43 +66,52 @@ void Huffman(){
 		t--;
 	}
 	removeDoInicio(&SubArvore, &Arvore);
-	mostra_estrutura(Arvore, MostraInfo);
 }  
 
-void GerarCodigo(NoABP *a, char *codAnterior){
-	int lado;
+void GerarCodigo(NoABP *a, char codAnterior[32]){
+	int lado, pos;
 	char codigoNovo[32];
+	Info *aux;
 
-	if (a->esq != NULL){
-		lado = ESQUERDA;
-		codigoNovo = Codigo(a, codAnterior, lado);
+	lado = ESQUERDA;
+	if(a->esq != NULL){
+		strcpy(codigoNovo, Codigo(a->esq, codAnterior, lado));
 		GerarCodigo(a->esq, codigoNovo);
 	}
-	if (a->dir != NULL)
+
+	if(a->dir != NULL){
 		lado = DIREITA;
-		codigoNovo = Codigo(a, codAnterior, lado);
+		strcpy(codigoNovo, Codigo(a->dir, codAnterior, lado));
 		GerarCodigo(a->dir, codigoNovo);
+	}
+
+	if((a->dir == NULL) && (a->esq == NULL)){
+		aux = (Info *) (a->info);
+		strcpy(aux->codigo, codAnterior);
+		if ((pos = elementoExiste(&F, aux, CompararSimbolo)) != -1)
+			modificaNaPosicao(&F, aux, pos);
 	}
 } 
 
-void Codigo(NoABP *no, char *codAnterior, int lado){
+char *Codigo(NoABP *no, char codAnterior[32], int lado){
 	Info *aux;
+	char novo[32];
 	if (lado == ESQUERDA){
 		aux = (Info *) (no->info);
-		printf("%s\n",aux->codigo);
-		strcat(codAnterior, "1");
-		printf("%s\n",codAnterior);
-		strcpy(aux->codigo, codAnterior);
-		printf("%s\n",aux->codigo);
+		strcpy(novo, codAnterior);
+		strcat(novo, "1");
+		strcpy(aux->codigo, novo);
+		printf("codigo %s, token %c\n",aux->codigo, aux->simbolo);
+		return novo;
 	}
 
 	if (lado == DIREITA){
 		aux = (Info *) (no->info);
-		printf("%s\n",aux->codigo);
-		strcat(codAnterior, "0");
-		printf("%s\n",codAnterior);
-		strcpy(aux->codigo, codAnterior);
-		printf("%s\n",aux->codigo);
+		strcpy(novo, codAnterior);
+		strcat(novo, "0");
+		strcpy(aux->codigo, novo);
+		printf("codigo %s, token %c\n",aux->codigo, aux->simbolo);
+		return novo;
 	} 
 }
 
@@ -161,7 +182,7 @@ ABP CriarFolhas(Info *aux){
 
 void MostraInfo(void *info){
 	Info *p = (Info *) info;
-	printf("nSimbolo %d simbolo %c \n", p->nSimbolo, p->simbolo, p->cod);
+	printf("nSimbolo %d simbolo %c codigo %s\n", p->nSimbolo, p->simbolo, p->codigo);
 }
 
 void MostraLista(void *info){
@@ -202,7 +223,7 @@ void InserirSimbolo(char c){
 	}else{
 		TotalSimbolos++;
 		aux.nSimbolo = 1;
-		aux.codigo = "";
+		strcpy(aux.codigo,"");
 		insereNoFim(&Frequencia, &aux);
 		insereNoFim(&F, &aux);
 	} 
