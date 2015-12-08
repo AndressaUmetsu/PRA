@@ -6,31 +6,36 @@
 #include "ABP.h"
 
 void Comprimir(char *arquivo){
-	FILE *texto;
+	FILE *texto, *comp;
+
 	char c; 
+	int pos;
+	Info aux;
 	
 	texto = fopen(arquivo, "r");
-
 	if(texto == NULL){
 		exit(1);
 	}
+
+	arquivo = strtok(arquivo, ".");
+	strcat(arquivo, ".pra");
+	comp = fopen(arquivo,"w");
+	if(comp == NULL){
+		exit(1);
+	}	
 
 	GerarCodigo(Arvore.raiz, "");
 	mostra_estrutura(Arvore, MostraInfo);
 	mostra_lista(F, MostraInfo);
 
-	/*while((c = fgetc(texto)) != EOF){
-		if (pos = buscaElemento(&F, aux, CompararSimbolo)) != -1){
-
-
-			fprintf(arquivo, "%s\n",aux->codigo);
-
+	while((c = fgetc(texto)) != EOF){
+		aux.simbolo = c;
+		if (buscaElemento(&F, &aux, CompararSimbolo) != -1){
+			fprintf(comp, "%s", aux.codigo);
 		}
-
-
-
 	}
-	*/
+	fclose(texto);
+	fclose(comp);
 }
 
 
@@ -101,7 +106,6 @@ char *Codigo(NoABP *no, char codAnterior[32], int lado){
 		strcpy(novo, codAnterior);
 		strcat(novo, "1");
 		strcpy(aux->codigo, novo);
-		printf("codigo %s, token %c\n",aux->codigo, aux->simbolo);
 		return novo;
 	}
 
@@ -110,7 +114,6 @@ char *Codigo(NoABP *no, char codAnterior[32], int lado){
 		strcpy(novo, codAnterior);
 		strcat(novo, "0");
 		strcpy(aux->codigo, novo);
-		printf("codigo %s, token %c\n",aux->codigo, aux->simbolo);
 		return novo;
 	} 
 }
