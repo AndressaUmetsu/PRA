@@ -93,24 +93,17 @@ ABP CriarSubArvore(){
 	removeDoInicio(&SubArvore, &aEsq);	
 	noEsq = aEsq.raiz;
 	iEsq = (Info*) (noEsq->info);
-		
-	strcat(iEsq->cod, "0");
-	printf("%s\n",iEsq->cod);
 
 	//SubArvore Direita
 	removeDoInicio(&SubArvore, &aDir);
 	noDir = aDir.raiz;
 	iDir = (Info *) (noDir->info);
 
-	strcat(iDir->cod, "1");
-	printf("%s\n",iDir->cod);
-
 	//Cria subarvore
 	inicializa_ABP(&aRaiz, sizeof(Info)); 
 	
 	iRaiz = malloc(sizeof(Info));	
 	iRaiz->nSimbolo = (iEsq->nSimbolo) + (iDir->nSimbolo);
-	strcat(iRaiz->cod, "");  
 
 	// insere info na raiz da subarvore
 	insere_ABP(&aRaiz, iRaiz , ComparaInfo);
