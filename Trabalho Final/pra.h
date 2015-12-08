@@ -11,6 +11,7 @@
 typedef struct {
 	int nSimbolo; 
 	char simbolo;
+	char cod[32];
 }Info;
 
 int TotalSimbolos;
@@ -21,6 +22,9 @@ Lista Frequencia;
 
 Lista SubArvore;
 
+ABP Arvore;
+
+int Nbits;
 
 void Comprimir();
 

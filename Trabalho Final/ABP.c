@@ -286,13 +286,13 @@ void remove_ABP(ABP *a, void *info, int (*compara_info)(void *, void *) ){
      
      remove_no_simples(n);
 
-     // ******** Verifica balanceamento ********
+    /* // ******** Verifica balanceamento ********
      NoABP *p = verifica_balanceamento(a->raiz);
      while(p != NULL ){
         executa_balancemanto(p, a);
         p = verifica_balanceamento(a->raiz);
      }
-     // ****************************************
+     // *****************************************/
 }
 
 int busca_APB(ABP a, void *chave, int (*compara_info)(void *, void *) ){
@@ -349,10 +349,10 @@ void percurso_em_largura(ABP a, void (*mostra_info)(void *) ){
            NoABP n;
            remover(&f, &n);
            (*mostra_info)(n.info); // Mostra nó (1o. da fila)
-           if(n.esq != NULL)       // Insere filhos na fila
-              inserir(&f, n.esq);
            if(n.dir != NULL)
               inserir(&f, n.dir);
+           if(n.esq != NULL)       // Insere filhos na fila
+              inserir(&f, n.esq);
         }
         limpaFila(&f);
      }

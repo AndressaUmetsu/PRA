@@ -4,11 +4,32 @@
 #include "Lista.h"
 #include "ABP.h"
 
-/*http://www2.unitins.br/BibliotecaMidia/Files/Documento/AVA_633682985082488750aula_6.pdf*/
+void Comprimir(char *arquivo){
+	FILE *texto;
+	char c; 
+	
+	texto = fopen(arquivo, "r");
+
+	if(texto == NULL){
+		exit(1);
+	}
+
+	/*while((c = fgetc(texto)) != EOF){
+		busca_APB(Arvore, c, ComparaInfo);
+
+	}*/
+	
+}
 
 
-void Comprimir(){
+int ComparaInfo(void *a, void *b){
+	if(Lado == DIREITA)
+       return 1;
 
+    if(Lado == ESQUERDA)
+       return -1;
+
+    return 0;
 }
 
 void Descomprimir(){
@@ -32,9 +53,13 @@ void Huffman(){
 		insereNoInicio(&SubArvore, &sub);
 		t--;
 	}
-	mostra_lista(SubArvore,MostraLista);
-	
+	removeDoInicio(&SubArvore, &Arvore);
+	mostra_estrutura(Arvore, MostraInfo);
 }  
+
+void GerarCodigo(); 
+
+
 
 int ProcuraMaior(){
 	Info *aux;
@@ -62,22 +87,31 @@ ABP CriarSubArvore(){
 	Info *iEsq, *iDir, *iRaiz;
 	NoABP *noEsq, *noDir, *noRaiz; 
 
+	Nbits++;
+
 	// SubArvore Esquerda
 	removeDoInicio(&SubArvore, &aEsq);	
 	noEsq = aEsq.raiz;
 	iEsq = (Info*) (noEsq->info);
+		
+	strcat(iEsq->cod, "0");
+	printf("%s\n",iEsq->cod);
 
 	//SubArvore Direita
 	removeDoInicio(&SubArvore, &aDir);
 	noDir = aDir.raiz;
 	iDir = (Info *) (noDir->info);
-	
+
+	strcat(iDir->cod, "1");
+	printf("%s\n",iDir->cod);
+
 	//Cria subarvore
 	inicializa_ABP(&aRaiz, sizeof(Info)); 
 	
 	iRaiz = malloc(sizeof(Info));	
 	iRaiz->nSimbolo = (iEsq->nSimbolo) + (iDir->nSimbolo);
-		
+	strcat(iRaiz->cod, "");  
+
 	// insere info na raiz da subarvore
 	insere_ABP(&aRaiz, iRaiz , ComparaInfo);
 
@@ -88,8 +122,6 @@ ABP CriarSubArvore(){
 	// insere subarvore direita
 	noRaiz->dir = aDir.raiz;
 	
-	//mostra_estrutura(aRaiz, MostraInfo);
-
 	return aRaiz;
 }
  
@@ -101,24 +133,15 @@ ABP CriarFolhas(Info *aux){
 	return subArvore;
 } 
 
-int ComparaInfo(void *a, void *b){
-	if(Lado == DIREITA)
-       return 1;
-
-    if(Lado == ESQUERDA)
-       return -1;
-
-    return 0;
-}
-
 void MostraInfo(void *info){
 	Info *p = (Info *) info;
-	printf("nSimbolo %d simbolo %c\n", p->nSimbolo, p->simbolo);
+	printf("nSimbolo %d simbolo %c codigo %s \n", p->nSimbolo, p->simbolo, p->cod);
 }
 
 void MostraLista(void *info){
 	ABP *p = (ABP *) info;
-	mostra_estrutura(*p, MostraInfo);
+	if (p != NULL)
+		mostra_estrutura(*p, MostraInfo);
 }
 
 void LerArquivo (char *arquivo){
